@@ -1,15 +1,25 @@
 'use strict'
 const connection = require('./module-conection');
 
-const SelectAll = `SELECT * FROM employees`;
+const selectAll = `SELECT * FROM employees`;
+const procedureStorge = `CALL employeesAddOrEdit(?, ?, ?)`;
 
 const getAll = () =>{
     return new Promise((resolve, reject) =>{
-        connection.query(SelectAll, (err, result) =>{
+        connection.query(selectAll, (err, result) =>{
             if(err) reject(err);
             else resolve(result);
         });
     });
 }
 
-module.exports = { getAll } ;
+const insert = (name, salary) =>{
+    return  new Promise((resolve, reject) =>{
+        connection.query(procedureStorge, [id, name, salary], (err, result) =>{
+            if(err) reject(err);
+            else resolve(result);
+        });
+    });
+}
+
+module.exports = { getAll, insert} ;

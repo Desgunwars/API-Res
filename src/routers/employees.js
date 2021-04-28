@@ -1,5 +1,6 @@
 'use strict'
 const express = require('express');
+const { request } = require('express');
 const router = express.Router();
 const process = require('../databases/modulo-method');
 
@@ -11,6 +12,18 @@ router.get('/', (req,res) =>{
     });
 });
 
+router.post('/', (req, res) =>{
+    const {id,name, salary} = req.params;
+    if(!name || !salary){
+        return res.status(500).send('No hay nombre o salario');
+    }else{
+        process.insert(id, name, salary).then(idEmployeesInsert =>{
+            res.json({status: 'Empleado Guardado'});
+        }).catch(err =>{
+            return res.status(500).send(`Error al insertar Empleado ${ err}`);
+        });
+    }
+});
 
 
 // router.get('/', (req, res) => {
