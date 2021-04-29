@@ -49,7 +49,7 @@ router.post('/', (req,res) =>{
 
 router.put('/:id', (req, res) =>{
     const { name, salary } = res.body;
-    const { id } = request.params;
+    const { id } = req.params;
     const query = `CALL employeeAddOrEdit(?, ?, ?);`;
     mysqlConnection.query(query, [id, name, salary], (err, rows, fields) =>{
         if(!err){
