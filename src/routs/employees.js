@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:id',(req, res) =>{
+router.get('/buscar',(req, res) =>{
     const { id } = req.params;
     mysqlConnection.query('SELECT * FROM employees WHERE id = ?', [id], (err, rows, fields )=>{
         if(!err){
@@ -36,7 +36,7 @@ router.post('/', (req,res) =>{
     });
 });
 
-router.put('/:id', (req, res) =>{
+router.put('/actualizar', (req, res) =>{
     const { name, salary } = res.body;
     const { id } = request.params;
     const query = 'CALL employeeAddOrEdit(?,?,?)';
@@ -49,7 +49,7 @@ router.put('/:id', (req, res) =>{
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:eliminar', (req, res) => {
     const { id } = request.params;
     mysqlConnection.query('DELETE FROM employees WHERE id = ?', [id], (err, rows, fields) =>{
         if(!err){
