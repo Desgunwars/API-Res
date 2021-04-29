@@ -37,11 +37,7 @@ router.delete('/:id', (req, res) => {
 
 router.post('/', (req,res) =>{
     const { id, name, salary } = req.body;
-    const query =  `
-        SET @id = ?;
-        SET @name = ?;
-        SET @salary = ?;
-        CALL employeeAddOrEdit(@id, @name, @salary);`;
+    const query =  `CALL employeeAddOrEdit(?,?,?);`;
     mysqlConnection.query(query, [id, name, salary], (error, rows, fields) => {
         if(!error){
             res.json({Status: 'Employeed Save'});
@@ -54,11 +50,7 @@ router.post('/', (req,res) =>{
 router.put('/:id', (req, res) =>{
     const { name, salary } = res.body;
     const { id } = request.params;
-    const query = `
-        SET @id = ?;
-        SET @name = ?;
-        SET @salary = ?;
-        CALL employeeAddOrEdit(@id, @name, @salary);`;
+    const query = `CALL employeeAddOrEdit(?, ?, ?);`;
     mysqlConnection.query(query, [id, name, salary], (err, rows, fields) =>{
         if(!err){
             res.json({ status: ' Employed Updated' })
