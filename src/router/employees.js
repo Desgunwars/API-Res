@@ -24,7 +24,7 @@ router.get('/buscar',(req, res) =>{
     });
 });
 
-router.post('/', (req,res) =>{
+router.post('/guardar', (req,res) =>{
     const { id, name, salary } = req.body;
     const query =  `CALL employeedAddOrEdit(?, ?,?);`;
     mysqlConnection.query(query, [id, name, salary], (error, rows, fields) => {
@@ -53,7 +53,7 @@ router.delete('/:eliminar', (req, res) => {
     const { id } = request.params;
     mysqlConnection.query('DELETE FROM employees WHERE id = ?', [id], (err, rows, fields) =>{
         if(!err){
-           res.json({status:'Employed Delete'});
+            res.json({status:'Employed Delete'});
         }else{
             console.log(err);
         }
