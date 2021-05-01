@@ -12,18 +12,23 @@ router.get('/', (req,res) =>{
     });
 });
 
-router.post('/', (req, res) =>{
-    const {id,name, salary} = req.params;
+router.post('/guardar/', (req, res) =>{
+    const { name, salary } = req.body;
     if(!name || !salary){
-        return res.status(500).send('No hay nombre o salario');
-    }else{
-        process.insert(id, name, salary).then(idEmployeesInsert =>{
-            res.json({status: 'Empleado Guardado'});
-        }).catch(err =>{
-            return res.status(500).send(`Error al insertar Empleado ${ err}`);
+        process.insert(name, salary).then(idEmployeesInsert => {
+            res.json({Status: 'Empleado Guardado'});
+        }).catch(err => {
+            return res.status(500).send(`Error al insertar Empleado `);
         });
+    } else{
+        return res.status(500).send('No hay nombre o salario');
     }
 });
+
+
+// router.get('/ObternerId/:id', (req, res) =>{
+    
+// }); 
 
 
 // router.get('/', (req, res) => {
