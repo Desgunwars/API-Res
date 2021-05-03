@@ -1,6 +1,5 @@
 'use strict'
 const express = require('express');
-const { request } = require('express');
 const router = express.Router();
 const process = require('../databases/modulo-method');
 
