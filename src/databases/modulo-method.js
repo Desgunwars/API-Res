@@ -1,27 +1,60 @@
-// 'use strict'
+'use strict'
 const connection = require('./module-conection');
 
-const selectAll = `SELECT * FROM employees;`;
-const Insertar = `INSERT INTO employees(name,salary) VALUES(? , ?);`;
+const selectAllSql = `SELECT * FROM employees;`;
+const selectIdSql = `SELECT * FROM employees WHERE id = ?;`;
+const insertSql = `INSERT INTO employees(name,salary) VALUES(? , ?);`;
+const editSql = `CALL employeeAddOrEdit(?,?,?);`
+const deleteSql =  `DELETE FROM employees WHERE id = ?;`;
 
-const getAll = () =>{
+const funGetAll = () =>{
     return new Promise((resolve, reject) =>{
-        connection.query(selectAll, (err, result) =>{
+        connection.query(selectAllSql, (err, result) =>{
             if(err) reject(err);
             else resolve(result);
         });
     });
 }
 
-const insert = (name, salary) =>{
+const funGetId = (id) =>{
     return new Promise((resolve, reject) =>{
-        connection.query(`INSERT INTO employees(name,salary) VALUES(?,?);`, [name, salary], (err, result) =>{
+        connection.query(selectIdSql, [id], (err, result) =>{
+            if(err) reject(err);
+            else resolve(result);
+        });
+    });
+}
+
+const funInsert = (name, salary) =>{
+    return new Promise((resolve, reject) =>{
+        connection.query(insertSql, [name, salary], (err, result) =>{
             if(err) reject(err);
             else resolve(result);
         });
     });
 };
 
+const funEdit = (id, name, salary) =>{
+    return new Promise((resolve, reject) =>{
+        connection.query(editSql, [id, name, salary], (err, result) =>{
+            if(err) reject(err);
+            else resolve();
+        });
+    });
+}
+
+const funDelete = (id) =>{
+    return new Promise((resolve, reject)=>{
+        connection.query(deleteSql, [id], (err, result) =>{
+            if(err) reject(err);
+            else resolve();
+        });
+    });
+}
 module.exports = { 
-    getAll, 
-    insert} ;
+    funGetAll,
+    funGetId, 
+    funInsert, 
+    funEdit,
+    funDelete
+};

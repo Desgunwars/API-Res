@@ -12,80 +12,47 @@ router.get('/', (req,res) =>{
     });
 });
 
+router.get('/buscarId/:id', (req, res) => {
+    const { id } = req.params;
+    process.funGetId(id).then(result =>{
+        res.json(result);
+    }).catch(err =>{
+        return res.status(500).send(`Error id no exite en la base de datos ${ err }`);
+    });
+});
+
 router.post('/guardar/', (req, res) =>{
     const { name, salary } = req.body;
-    if(!name || !salary){
+    if((name !== null || salary !== null) || (name !== undefined || salary !== undefined)){
         process.insert(name, salary).then(idEmployeesInsert => {
             res.json({Status: 'Empleado Guardado'});
         }).catch(err => {
-            return res.status(500).send(`Error al insertar Empleado `);
+            return res.status(500).send(`Error al insertar Empleado ${ err }`);
         });
     } else{
         return res.status(500).send('No hay nombre o salario');
     }
 });
 
+router.put('/editar/:id', (req, res)=>{
+    const {name, salary} = req.body;
+    const { id } = req.params;
+    process.funEdit(id, name, salary).then( edit =>{
+        res.json({ status: 'Empleado editado' });
+    }).catch(err =>{
+        return res.status(500).send(`Error al eliminar empleado ${ err }`);
+    });
+});
 
-// router.get('/ObternerId/:id', (req, res) =>{
-    
-// }); 
+router.delete('/borrar/:id', (req, res) =>{
+    const { id } = req.params;
+    process.funDelete(id).then(save => {
+        res.json({status: 'Empleado eliminado'});
+    }).catch(err =>{
+        return res.status(500).send(`Error al eliminar empleado ${ err }`);
+    });
+});
 
 
-// router.get('/', (req, res) => {
-//     mysqlConnection.query('SELECT * FROM employees', (err, rows, fields) =>{
-//         if(!err){
-//             res.json(rows);
-//         }else{
-//             console.log(err);
-//         }
-//     });
-// });
-
-// router.get('/:id',(req, res) =>{
-//     const { id } = req.params;
-//     mysqlConnection.query('SELECT * FROM employees WHERE id = ?', [id], (err, rows, fields )=>{
-//         if(!err){
-//             res.json(rows[0]);
-//         }else{
-//             console.log(err);
-//         }   
-//     });
-// });
-
-// router.post('/', (req,res) =>{
-//     const { id, name, salary } = req.body;
-//     const query =  `CALL employeedAddOrEdit(?, ?,?);`;
-//     mysqlConnection.query(query, [id, name, salary], (error, rows, fields) => {
-//         if(!error){
-//             res.json({Status: 'Employeed Save'});
-//         }else{
-//             console.log(error);
-//         }
-//     });
-// });
-
-// router.put('/:id', (req, res) =>{
-//     const { name, salary } = res.body;
-//     const { id } = request.params;
-//     const query = 'CALL employeeAddOrEdit(?,?,?)';
-//     mysqlConnection.query(query, [id, name, salary], (err, rows, fields) =>{
-//         if(!err){
-//             res.json({ status: ' Employed Updated' })
-//         }else{
-//             console.log(err);
-//         }
-//     });
-// });
-
-// router.delete('/:id', (req, res) => {
-//     const { id } = request.params;
-//     mysqlConnection.query('DELETE FROM employees WHERE id = ?', [id], (err, rows, fields) =>{
-//         if(!err){
-//            res.json({status:'Employed Delete'});
-//         }else{
-//             console.log(err);
-//         }
-//     });
-// });
 
 module.exports  = router;
